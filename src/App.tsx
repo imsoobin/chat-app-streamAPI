@@ -3,13 +3,11 @@ import { StreamChat } from "stream-chat";
 import { Chat } from "stream-chat-react";
 import Cookies from "universal-cookie";
 import { ChannelContainer, ChannelListContainer, Auth } from "./component";
-import 'stream-chat-react/dist/css/index.css';
+import "stream-chat-react/dist/css/index.css";
 import "./App.css";
 
 const cookies = new Cookies();
-
-const api_key: string = "pav3fwzjsq29";
-
+const api_key: any = process.env.REACT_APP_API_KEY;
 const client: any = StreamChat.getInstance(api_key);
 const authToken: string = cookies.get("token");
 
@@ -37,10 +35,10 @@ const App: React.FC = () => {
     <div className="app__wrapper">
       <Chat client={client} theme="team light">
         <ChannelListContainer
-        isCreating={isCreating}
-        setIsCreating={setIsCreating}
-        setCreateType={setCreateType}
-        setIsEditing={setIsEditing}
+          isCreating={isCreating}
+          setIsCreating={setIsCreating}
+          setCreateType={setCreateType}
+          setIsEditing={setIsEditing}
         />
         <ChannelContainer
           isCreating={isCreating}

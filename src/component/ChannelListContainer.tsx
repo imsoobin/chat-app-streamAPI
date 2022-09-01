@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import Cookies from "universal-cookie";
 import { ChannelSerach, TeamChannelList, TeamChannelPreview } from "./";
-import Hospital from "../assets/hospital.png";
 import Logout from "../assets/logout.png";
 import { ChannelList, useChatContext } from "stream-chat-react";
+import MenuIcon from "../assets/menu.png";
+import { useAppDispatch, useAppSelector } from "../hooks/hook";
+import { setResize, showUserEdit, toggleMenu } from "../redux/reducer";
+// import UserIcon from '../assets/user.jpg'
 
 const cookies = new Cookies();
 
@@ -23,17 +26,24 @@ interface ChannelListContainerState {
   setCreateType?: React.Dispatch<React.SetStateAction<string>>;
   setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 const SildeBar: React.FC<Props> = ({ LogoutFunc }) => {
+  const { client }: any = useChatContext();
+
+  const dispatch = useAppDispatch();
+  const handleEditUser = () => {
+    return dispatch(showUserEdit(true));
+  };
   return (
     <div className="channel-list__sidebar">
       <div className="channel-list__sidebar__icon1">
-        <div className="icon1__inner">
-          <img src={Hospital} alt="Hospital" width="30" />
+        <div className="icon1__inner" title="Profile" onClick={handleEditUser}>
+          <img src={client.user.image} alt="Profile" width="20" />
         </div>
       </div>
-      <div className="channel-list__sidebar__icon2">
-        <div className="icon1__inner">
-          <img src={Logout} alt="Logout" width="30" onClick={LogoutFunc} />
+      <div className="channel-list__sidebar__icon1">
+        <div className="icon1__inner" title="Logout">
+          <img src={Logout} alt="Logout" width="20" onClick={LogoutFunc} />
         </div>
       </div>
     </div>
@@ -41,9 +51,17 @@ const SildeBar: React.FC<Props> = ({ LogoutFunc }) => {
 };
 
 const CompanyHeader: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const handleHiddenMenu = () => {
+    return dispatch(toggleMenu());
+  };
+
   return (
     <div className="channel-list__header">
-      <div className="channel-list__header__text">The header</div>
+      <div className="channel-list__header__text">OhMess!</div>
+      <div style={{ cursor: "pointer" }} onClick={handleHiddenMenu}>
+        <img src={MenuIcon} alt="" width={"35"} style={{ borderRadius: 5 }} />
+      </div>
     </div>
   );
 };
@@ -139,33 +157,59 @@ const ChannelListContainer: React.FC<ChannelListContainerState> = ({
   setCreateType,
   setIsEditing,
 }) => {
+  const dispatch = useAppDispatch();
   const [toggleContainer, setToggleContainer] = useState<boolean>(false);
+  const toggle = useAppSelector((state) => state.actionEvt.isToggle);
+
+  const handleShowMenu = () => {
+    return dispatch(toggleMenu());
+  };
+  function handleResize() {
+    if (window.innerWidth <= 767) {
+      return dispatch(setResize(true));
+    } else {
+      return dispatch(setResize(false));
+    }
+  }
+  window.addEventListener("resize", handleResize);
   return (
-    <div className="channel-list__container">
-      <ChannelListContent
-        setIsCreating={setIsCreating}
-        setCreateType={setCreateType}
-        setIsEditing={setIsEditing}
-      />
-      <div
-        className="channel-list__container-responsive"
-        style={{
-          left: toggleContainer ? "0%" : "-90%",
-          backgroundColor: "#005fff",
-        }}
-      >
+    <>
+      {toggle ? (
         <div
-          className="channel-list__container-toggle"
-          onClick={() => setToggleContainer((prev) => !prev)}
-        ></div>
-        <ChannelListContent
-          setIsCreating={setIsCreating}
-          setCreateType={setCreateType}
-          setIsEditing={setIsEditing}
-          setToggleContainer={setToggleContainer}
-        />
-      </div>
-    </div>
+          className="menu__show"
+          style={{ cursor: "pointer" }}
+          onClick={handleShowMenu}
+        >
+          <img src={MenuIcon} alt="" width={"35"} />
+        </div>
+      ) : (
+        <div className="channel-list__container">
+          <ChannelListContent
+            setIsCreating={setIsCreating}
+            setCreateType={setCreateType}
+            setIsEditing={setIsEditing}
+          />
+          <div
+            className="channel-list__container-responsive"
+            style={{
+              left: toggleContainer ? "0%" : "-100%",
+              backgroundColor: "#005fff",
+            }}
+          >
+            <div
+              className="channel-list__container-toggle"
+              onClick={() => setToggleContainer((prev) => !prev)}
+            ></div>
+            <ChannelListContent
+              setIsCreating={setIsCreating}
+              setCreateType={setCreateType}
+              setIsEditing={setIsEditing}
+              setToggleContainer={setToggleContainer}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 export default ChannelListContainer;

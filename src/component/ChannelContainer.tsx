@@ -1,6 +1,7 @@
 import React from "react";
 import { Channel } from "stream-chat-react";
-import { ChannelInner, CreateChannel, EditChannel } from "./";
+import { useAppSelector } from "../hooks/hook";
+import { ChannelInner, CreateChannel, EditChannel, Edituser } from "./";
 
 interface Props {
   isCreating?: boolean;
@@ -18,6 +19,14 @@ const ChannelContainer: React.FC<Props> = ({
   createType,
 }) => {
   // const { channel } = useChatContext();
+  const isUserEdit = useAppSelector((state) => state.actionEvt.showUser);
+  if (isUserEdit) {
+    return (
+      <div className="channel__container">
+        <Edituser />
+      </div>
+    );
+  }
   if (isCreating) {
     return (
       <div className="channel__container">

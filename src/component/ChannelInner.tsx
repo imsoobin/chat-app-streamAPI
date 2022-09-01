@@ -63,6 +63,7 @@ const TeamChannelHeader = ({ setIsEditing }: any) => {
     const members = Object.values(channel.state.members).filter(
       ({ user }: any) => user.id !== client.userID
     );
+    
     const additionalMembers = members.length - 3;
 
     if (channel.type === "messaging") {
@@ -102,8 +103,8 @@ const TeamChannelHeader = ({ setIsEditing }: any) => {
 
   const getWatcherText = (watchers: any) => {
     if (!watchers) return "No users online";
-    if (watchers === 1) return "1 user online";
-    return `${watchers} users online`;
+    if (watchers === 1) return "1 online";
+    return `${watchers} online`;
   };
 
   return (

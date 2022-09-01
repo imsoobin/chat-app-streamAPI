@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import signInImage from "../assets/signup.jpg";
 
 const cookies = new Cookies();
 
@@ -40,7 +39,9 @@ const Auth: React.FC = () => {
       const {
         data: { token, userId, hashPassword, fullName },
       } = await axios.post(
-        `https://oh-mess.herokuapp.com/auth/${isSignUp ? "signup" : "login"}`,
+        `${process.env.REACT_APP_API_URL_AUTH}/${
+          isSignUp ? "signup" : "login"
+        }`,
         { userName, password, fullName: form.fullName, phoneNumber, avatarUrl }
       );
       cookies.set("token", token);
@@ -155,9 +156,6 @@ const Auth: React.FC = () => {
               </p>
             </div>
           </div>
-        </div>
-        <div className="auth__form-container_image">
-          <img src={signInImage} alt="sign in" />
         </div>
       </div>
     </>
