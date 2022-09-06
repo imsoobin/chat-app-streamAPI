@@ -131,51 +131,15 @@ const TeamChannelHeader = ({ setIsEditing }: any) => {
         <p className="team-channel-header__right-text">
           {getWatcherText(watcher_count)}
         </p>
-        <button
-          style={{
-            padding: "5px 10px",
-            cursor: "pointer",
-            borderRadius: 5,
-            outline: "none",
-            border: "none",
-            background: "#202020",
-            color: "#fff",
-            marginLeft: 10,
-          }}
-          onClick={handleLeaveGroup}
-        >
+        <button className="button-channel__top" onClick={handleLeaveGroup}>
           Leave
         </button>
         {channel?.type === "team" ? (
-          <button
-            style={{
-              padding: "5px 10px",
-              cursor: "pointer",
-              borderRadius: 5,
-              outline: "none",
-              border: "none",
-              background: "#202020",
-              color: "#fff",
-              marginLeft: 10,
-            }}
-            onClick={handleDeleteChannel}
-          >
+          <button className="button-channel__top" onClick={handleDeleteChannel}>
             Delete channel
           </button>
         ) : (
-          <button
-            style={{
-              padding: "5px 10px",
-              cursor: "pointer",
-              borderRadius: 5,
-              outline: "none",
-              border: "none",
-              background: "#202020",
-              color: "#fff",
-              marginLeft: 10,
-            }}
-            onClick={handleDeleteChannel}
-          >
+          <button className="button-channel__top" onClick={handleDeleteChannel}>
             Delete group
           </button>
         )}

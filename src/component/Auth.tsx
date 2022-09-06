@@ -35,7 +35,10 @@ const Auth: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
-      const { avatarUrl, password, phoneNumber, userName } = form;
+      const { avatarUrl, password, phoneNumber, userName }: any = form;
+      if (password?.length < 5) {
+        return alert("Password length > 5");
+      }
       const {
         data: { token, userId, hashPassword, fullName },
       } = await axios.post(
@@ -113,7 +116,7 @@ const Auth: React.FC = () => {
                     type={"text"}
                     placeholder="Avatar url"
                     onChange={handleChange}
-                    required
+                    // required
                   />
                 </div>
               )}

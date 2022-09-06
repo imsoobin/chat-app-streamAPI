@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Cookies from "universal-cookie";
 import { ChannelSerach, TeamChannelList, TeamChannelPreview } from "./";
 import Logout from "../assets/logout.png";
-import { ChannelList, useChatContext } from "stream-chat-react";
+import { Avatar, ChannelList, useChatContext } from "stream-chat-react";
 import MenuIcon from "../assets/menu.png";
 import { useAppDispatch, useAppSelector } from "../hooks/hook";
 import { setResize, showUserEdit, toggleMenu } from "../redux/reducer";
@@ -33,11 +33,16 @@ const SildeBar: React.FC<Props> = ({ LogoutFunc }) => {
   const handleEditUser = () => {
     return dispatch(showUserEdit(true));
   };
+
   return (
     <div className="channel-list__sidebar">
       <div className="channel-list__sidebar__icon1">
         <div className="icon1__inner" title="Profile" onClick={handleEditUser}>
-          <img src={client.user?.image} alt="Profile" width="20" />
+          <Avatar
+            image={client.user?.image}
+            name={client?.user?.fullName}
+            size={40}
+          />
         </div>
       </div>
       <div className="channel-list__sidebar__icon1">
