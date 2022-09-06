@@ -1,7 +1,7 @@
 :root {
   /* --primary-color: #005fff; */
   --primary-color-alpha: #005fff1a;
-  --primary-color: #202020;
+  --primary-color: #005fff;
 }
 
 html,
@@ -1748,7 +1748,7 @@ div.rta__autocomplete.str-chat__emojisearch {
 .menu__show {
   width: auto;
   height: 100vh;
-  background-color: #202020;
+  background-color: var(--primary-color);
 }
 
 .team-channerl-header_menu-icon {
@@ -1875,7 +1875,7 @@ div.rta__autocomplete.str-chat__emojisearch {
   border-radius: 5px;
   outline: none;
   border: none;
-  background: #202020;
+  background: var(--primary-color);
   color: #fff;
   margin-left: 10px;
 }

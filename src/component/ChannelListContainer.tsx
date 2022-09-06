@@ -3,7 +3,7 @@ import Cookies from "universal-cookie";
 import { ChannelSerach, TeamChannelList, TeamChannelPreview } from "./";
 import Logout from "../assets/logout.png";
 import { Avatar, ChannelList, useChatContext } from "stream-chat-react";
-import MenuIcon from "../assets/menu.png";
+import { MenuIcon } from "../assets";
 import { useAppDispatch, useAppSelector } from "../hooks/hook";
 import { setResize, showUserEdit, toggleMenu } from "../redux/reducer";
 
@@ -64,7 +64,7 @@ const CompanyHeader: React.FC = () => {
     <div className="channel-list__header">
       <div className="channel-list__header__text">OhMess!</div>
       <div style={{ cursor: "pointer" }} onClick={handleHiddenMenu}>
-        <img src={MenuIcon} alt="" width={"35"} style={{ borderRadius: 5 }} />
+        <MenuIcon />
       </div>
     </div>
   );
@@ -184,7 +184,7 @@ const ChannelListContainer: React.FC<ChannelListContainerState> = ({
           style={{ cursor: "pointer" }}
           onClick={handleShowMenu}
         >
-          <img src={MenuIcon} alt="" width={"35"} />
+          <MenuIcon />
         </div>
       ) : (
         <div className="channel-list__container">
