@@ -325,7 +325,7 @@ body {
   padding: 0 10px;
 }
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -333,11 +333,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #121212;
+  background: var(--primary-color);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #505050;
+  background: #043a99;
+  border-radius: 10px;
 }
 .str-chat__thread-list .channel-empty__container {
   display: none;
