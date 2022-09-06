@@ -937,7 +937,7 @@ body {
 }
 
 .team-channel-header__right {
-  flex: 0.55;
+  /* flex: 0.55; */
   display: flex;
   align-items: center;
   justify-content: flex-end;

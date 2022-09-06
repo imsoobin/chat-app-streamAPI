@@ -56,14 +56,14 @@ const ChannelInner: React.FC<Props> = ({ setIsEditing }) => {
 };
 
 const TeamChannelHeader = ({ setIsEditing }: any) => {
-  const { channel, watcher_count } = useChannelStateContext();
-  const { client } = useChatContext();
+  const { channel, watcher_count }: any = useChannelStateContext();
+  const { client }: any = useChatContext();
 
   const MessagingHeader = () => {
     const members = Object.values(channel.state.members).filter(
       ({ user }: any) => user.id !== client.userID
     );
-    
+
     const additionalMembers = members.length - 3;
 
     if (channel.type === "messaging") {
@@ -72,7 +72,7 @@ const TeamChannelHeader = ({ setIsEditing }: any) => {
           {members.map(({ user }: any, i: number) => (
             <div key={i} className="team-channel-header__name-multi">
               <Avatar
-                image={user.image}
+                image={user?.image}
                 name={user.fullName || user.id}
                 size={32}
               />
@@ -107,6 +107,23 @@ const TeamChannelHeader = ({ setIsEditing }: any) => {
     return `${watchers} online`;
   };
 
+  const handleLeaveGroup = async () => {
+    await channel?.removeMembers([client?.userID], {
+      text: `${client?.user?.name} leaved group`,
+    });
+  };
+
+  const handleDeleteChannel = async () => {
+    if (
+      client?.user?.name === "admin" ||
+      channel?.data?.created_by?.id === client?.userID
+    ) {
+      await channel.delete();
+    } else {
+      return alert("You are not admin or user created");
+    }
+  };
+
   return (
     <div className="team-channel-header__container">
       <MessagingHeader />
@@ -114,6 +131,54 @@ const TeamChannelHeader = ({ setIsEditing }: any) => {
         <p className="team-channel-header__right-text">
           {getWatcherText(watcher_count)}
         </p>
+        <button
+          style={{
+            padding: "5px 10px",
+            cursor: "pointer",
+            borderRadius: 5,
+            outline: "none",
+            border: "none",
+            background: "#202020",
+            color: "#fff",
+            marginLeft: 10,
+          }}
+          onClick={handleLeaveGroup}
+        >
+          Leave
+        </button>
+        {channel?.type === "team" ? (
+          <button
+            style={{
+              padding: "5px 10px",
+              cursor: "pointer",
+              borderRadius: 5,
+              outline: "none",
+              border: "none",
+              background: "#202020",
+              color: "#fff",
+              marginLeft: 10,
+            }}
+            onClick={handleDeleteChannel}
+          >
+            Delete channel
+          </button>
+        ) : (
+          <button
+            style={{
+              padding: "5px 10px",
+              cursor: "pointer",
+              borderRadius: 5,
+              outline: "none",
+              border: "none",
+              background: "#202020",
+              color: "#fff",
+              marginLeft: 10,
+            }}
+            onClick={handleDeleteChannel}
+          >
+            Delete group
+          </button>
+        )}
       </div>
     </div>
   );

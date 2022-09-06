@@ -24,27 +24,35 @@ const ChangeNameInput: React.FC<Names> = ({ nameChange, setNameChange }) => {
   );
 };
 const EditChannel: React.FC<Props> = ({ setIsEditing }) => {
-  const { channel }: any = useChatContext();
-
+  const { channel, client }: any = useChatContext();
+  const memmbersActive = Object.keys(channel.state.members);
   const [nameChange, setNameChange] = useState<string>(channel?.data?.name);
-  const [selectedusers, setSelectedUsers] = useState<any>([]);
+  const [selectedusers, setSelectedUsers] = useState<any>(memmbersActive);
 
   const handleSaveChange = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const changed = nameChange !== (channel?.data?.name || channel?.data?.id);
-    if (changed) {
-      await channel.update(
-        { name: nameChange },
-        { text: `Channel name changed to ${nameChange}` }
-      );
+    if (channel?.data?.created_by?.id === client?.userID) {
+      e.preventDefault();
+      const changed = nameChange !== (channel?.data?.name || channel?.data?.id);
+      if (changed) {
+        await channel.update(
+          { name: nameChange },
+          { text: `Channel name changed to ${nameChange}` }
+        );
+      }
+
+      if (selectedusers.length) {
+        await channel?.addMembers(selectedusers, {
+          text: `${selectedusers} joined`,
+        });
+      }
+      setIsEditing(false);
+      setNameChange("");
+      setSelectedUsers([]);
+    } else {
+      return alert("You are not admin or user created");
     }
-    if (selectedusers.length) {
-      await channel?.addMembers(selectedusers);
-    }
-    setIsEditing(false);
-    setNameChange("");
-    setSelectedUsers([]);
   };
+
   return (
     <div className="edit-channel__container">
       <div className="edit-channel__header">
@@ -52,7 +60,11 @@ const EditChannel: React.FC<Props> = ({ setIsEditing }) => {
         <CloseCreateChannel setIsEditing={setIsEditing} />
       </div>
       <ChangeNameInput nameChange={nameChange} setNameChange={setNameChange} />
-      <UserList setSelectedUsers={setSelectedUsers} />
+      <UserList
+        setSelectedUsers={setSelectedUsers}
+        selectedusers={selectedusers}
+        memmbersActive={memmbersActive}
+      />
       <div className="edit-channel__button-wrapper" onClick={handleSaveChange}>
         <p>Save changes</p>
       </div>

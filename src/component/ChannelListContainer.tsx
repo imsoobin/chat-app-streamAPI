@@ -6,7 +6,6 @@ import { ChannelList, useChatContext } from "stream-chat-react";
 import MenuIcon from "../assets/menu.png";
 import { useAppDispatch, useAppSelector } from "../hooks/hook";
 import { setResize, showUserEdit, toggleMenu } from "../redux/reducer";
-// import UserIcon from '../assets/user.jpg'
 
 const cookies = new Cookies();
 
@@ -38,7 +37,7 @@ const SildeBar: React.FC<Props> = ({ LogoutFunc }) => {
     <div className="channel-list__sidebar">
       <div className="channel-list__sidebar__icon1">
         <div className="icon1__inner" title="Profile" onClick={handleEditUser}>
-          <img src={client.user.image} alt="Profile" width="20" />
+          <img src={client.user?.image} alt="Profile" width="20" />
         </div>
       </div>
       <div className="channel-list__sidebar__icon1">

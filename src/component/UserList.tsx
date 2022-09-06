@@ -15,18 +15,38 @@ const ListContainer: React.FC<any> = ({ children }) => {
   );
 };
 
-const UserItem: React.FC<any> = ({ user, setSelectedUsers }) => {
+const UserItem: React.FC<any> = ({
+  user,
+  setSelectedUsers,
+  memmbersActive,
+  selectedusers,
+}) => {
   const [isActive, setIsActive] = useState<boolean>(false);
+  const { client, channel }: any = useChatContext();
+
+  useEffect(() => {
+    const members = memmbersActive?.includes(user.id);
+    if (members) setIsActive(true);
+    // eslint-disable-next-line
+  }, []);
   const handleActive = () => {
-    if (isActive) {
-      setSelectedUsers((prevUsers: any) =>
-        prevUsers.filter((prevUser: any) => prevUser !== user.id)
-      );
+    if (
+      client?.user?.name === "admin" ||
+      channel?.data?.created_by?.id === client?.userID
+    ) {
+      if (isActive) {
+        setSelectedUsers((prevUsers: any) =>
+          prevUsers.filter((prevUser: any) => prevUser !== user.id)
+        );
+      } else {
+        setSelectedUsers((prevUsers: any) => [...prevUsers, user.id]);
+      }
+      setIsActive((prev) => !prev);
     } else {
-      setSelectedUsers((prevUsers: any) => [...prevUsers, user.id]);
+      return alert("You are not admin or user created");
     }
-    setIsActive((prev) => !prev);
   };
+
   return (
     <div className="user-item__wrapper" onClick={handleActive}>
       <div className="user-item__name-wrapper">
@@ -46,12 +66,17 @@ const UserItem: React.FC<any> = ({ user, setSelectedUsers }) => {
   );
 };
 
-const UserList: React.FC<any> = ({ setSelectedUsers }) => {
+const UserList: React.FC<any> = ({
+  setSelectedUsers,
+  memmbersActive,
+  selectedusers,
+}) => {
   const { client } = useChatContext();
   const [users, setusers] = useState<[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+
   useEffect(() => {
     const getusers = async () => {
       if (isLoading) return;
@@ -63,7 +88,10 @@ const UserList: React.FC<any> = ({ setSelectedUsers }) => {
           { limit: 8 }
         );
         if (rs.users.length) {
-          setusers(rs.users);
+          const roleUser = rs?.users?.filter(
+            (user: any) => user.role === "user"
+          );
+          setusers(roleUser);
         } else {
           setIsEmpty(true);
         }
@@ -77,7 +105,6 @@ const UserList: React.FC<any> = ({ setSelectedUsers }) => {
     if (client) getusers();
     // eslint-disable-next-line
   }, []);
-
   if (isEmpty) {
     return (
       <ListContainer>
@@ -92,6 +119,7 @@ const UserList: React.FC<any> = ({ setSelectedUsers }) => {
       </ListContainer>
     );
   }
+
   return (
     <ListContainer>
       {isLoading ? (
@@ -102,6 +130,8 @@ const UserList: React.FC<any> = ({ setSelectedUsers }) => {
             index={idx}
             key={user?.id}
             user={user}
+            memmbersActive={memmbersActive}
+            selectedusers={selectedusers}
             setSelectedUsers={setSelectedUsers}
           />
         ))

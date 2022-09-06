@@ -72,7 +72,7 @@ const SearchResult: React.FC<any> = ({
     >
       <div className="channel-search__result-user">
         <Avatar
-          image={channel.image || undefined}
+          image={channel?.image || undefined}
           name={channel.fullName}
           size={24}
         />
