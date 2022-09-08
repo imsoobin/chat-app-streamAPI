@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@chakra-ui/react";
 import {
   MessageList,
   MessageInput,
@@ -11,6 +12,9 @@ import {
 } from "stream-chat-react";
 
 import { ChannelInfo } from "../assets";
+import { useAppDispatch } from "../hooks/hook";
+import { toggleModal } from "../redux/reducer";
+import { VideoIcon } from "./VideoIcon";
 
 export const GiphyContext = React.createContext({});
 
@@ -58,6 +62,7 @@ const ChannelInner: React.FC<Props> = ({ setIsEditing }) => {
 const TeamChannelHeader = ({ setIsEditing }: any) => {
   const { channel, watcher_count }: any = useChannelStateContext();
   const { client }: any = useChatContext();
+  const dispatch = useAppDispatch();
 
   const MessagingHeader = () => {
     const members = Object.values(channel.state.members).filter(
@@ -123,11 +128,16 @@ const TeamChannelHeader = ({ setIsEditing }: any) => {
       return alert("You are not admin or user created");
     }
   };
-
+  const handleOpenModal = () => {
+    return dispatch(toggleModal(true));
+  };
   return (
     <div className="team-channel-header__container">
       <MessagingHeader />
       <div className="team-channel-header__right">
+        <Button onClick={handleOpenModal}>
+          <VideoIcon />
+        </Button>
         <p className="team-channel-header__right-text">
           {getWatcherText(watcher_count)}
         </p>

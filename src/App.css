@@ -58,10 +58,10 @@ body {
 }
 
 @media screen and (max-width: 800px) {
-  .auth__form-container_fields-content{
+  .auth__form-container_fields-content {
     width: 100%;
   }
-} 
+}
 
 .auth__form-container_fields-content p {
   font-size: 1.5rem;
@@ -439,7 +439,7 @@ body {
   justify-content: center;
 }
 
-.str-chat__avatar{
+.str-chat__avatar {
   margin-right: 0 !important;
 }
 
@@ -1046,7 +1046,7 @@ body {
   font-family: Helvetica Neue, sans-serif;
   font-size: 14px;
   color: #ffffff;
-  padding: 0px 20px;
+  padding: 10px 20px;
   height: 100%;
   width: 100%;
   text-overflow: ellipsis;
@@ -1796,6 +1796,18 @@ div.rta__autocomplete.str-chat__emojisearch {
 }
 .menu__toggle-responsive span {
   cursor: pointer;
+}
+.video_calling {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+  width: 100%;
+  background: #202020;
+  z-index: 1000;
 }
 
 @media screen and (max-width: 960px) {
